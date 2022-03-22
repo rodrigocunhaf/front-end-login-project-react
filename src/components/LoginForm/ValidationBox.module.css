@@ -1,0 +1,38 @@
+
+
+.hidden{
+    animation-name: hidden;
+    animation-duration: 1s;
+}
+
+.none{
+    display: none;
+}
+
+.show{
+    animation-name: show;
+    animation-duration: 1s;
+}
+
+.show  {
+    font-size: 13px !important;
+    display: flex;
+    align-items: center;
+}
+
+.image{
+    width: 13px;
+    height: 13px;
+    margin-right: 5px;
+}
+
+
+
+@keyframes show{
+    from { opacity: 0 } to { opacity: 1 }
+}
+
+@keyframes hidden{
+    from { opacity: 1 } to { opacity: 0 }
+}
+

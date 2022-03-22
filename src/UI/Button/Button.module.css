@@ -1,0 +1,24 @@
+.container{
+    display: flex;
+    justify-content: center;
+}
+
+.container button{
+    background-color: rgb(235, 183, 86);
+    border:1px solid black;
+    padding: 10px;
+    margin: 10px;
+    min-width: 200px;
+    max-width: 200px;
+    min-height: 50px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 4px;
+    font-size: 18px;
+}
+
+.container button:hover{
+    background-color: rgb(243, 243, 122);
+    transition-duration: 1s;
+    cursor: pointer;
+}

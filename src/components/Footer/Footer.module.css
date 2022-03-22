@@ -1,0 +1,21 @@
+.container {
+    background-color: rgb(44, 43, 43);
+    min-height: calc( 100vh - 80vh);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}   
+
+.logoImage {
+    filter: invert(1);
+    max-width: 70px;
+    
+}
+
+.title {
+    color: white;
+    flex-direction: column;
+    justify-content: center;
+
+}

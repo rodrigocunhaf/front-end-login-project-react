@@ -1,0 +1,91 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc( 100vh - 30vh);
+    width: 100%;
+
+}
+
+.box{
+    background-color: white;
+    padding: 50px;
+    box-shadow: 0px 0px 7px 0.2px black;
+    max-width: 500px;
+    width: 100%;
+    min-height: 300px;
+}
+
+.inputBlock{
+    display: block;
+    margin-top: 10px;
+}
+
+.boxInput{
+    width: 100%;
+    min-height: 83px;
+}
+
+.boxInput label{
+    font-weight: bold;
+    font-size: 20px;
+    min-height: 80px;
+    max-height: 80px;
+    padding: 5px;
+}
+
+.boxInput input{
+    max-width: 100%;
+    font-size: 20px;
+    padding: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    outline: 0;
+    min-height: 33px;
+    max-height: 33px;
+}
+
+.boxInput input:focus{
+    border:0;
+    box-shadow: 0px 0px 2px 1px black;
+}
+
+
+.inputError{
+    border:1px solid red !important;
+    box-shadow: 0px 0px 2px 1px red !important;
+}
+
+.inputError:focus{
+    border:1px solid red !important;
+    box-shadow: 0px 0px 2px 1px red !important;
+}
+
+
+@media screen and (max-width:425px) {
+    .box{
+        max-width: 300px;
+    }
+
+    .container{
+        min-height: calc( 100vh - 40vh);
+    }
+}
+
+@media screen and (min-width:321px) and (max-width:424px) {
+    .box{
+        max-width: 200px;
+    }
+
+    .container{
+        min-height: calc( 100vh - 40vh);
+    }
+    
+}   
+
+@media screen and (max-width:320px) {
+    .box{
+        max-width: 200px;
+    }
+}   
