@@ -8,32 +8,21 @@ import ValidationBox from "./ValidationBox";
 const LoginForm = ( props) => {
     
     const [username, setUsername] = useState('');
-    const [validUsername, setValidUsername ] = useState(true);
+    const [validUsername, setValidUsername ] = useState(false);
 
     const [password, setPassword] = useState('');
-    const [validPassword, setValidPassword ] = useState(true);
+    const [validPassword, setValidPassword ] = useState(false);
 
     const [visibleUsername, setVisibleUsername] =   useState(false);
     const [visiblePassword, setVisiblePassword] =   useState(false);
 
-    const [isLocked, setLocked] =  useState(true);
     
     const setUsernameForm = ( event ) => {
         setUsername(event.target.value);
-        if (!validator.isEmail(username) ){
-            setValidUsername(false);
-        } else {
-            setValidUsername(true);
-        }
     };
 
     const setPasswordForm = ( event ) => {
         setPassword(event.target.value);
-        if (event.target.value.length < 10 ){
-            setValidPassword(false);
-        } else {
-            setValidPassword(true);
-        }
     };
 
     const onSubmitForm = (event ) => {
@@ -61,41 +50,23 @@ const LoginForm = ( props) => {
 
     useEffect (() => {
 
-        let timer;
-
-        if ( !validUsername && !!username ){
-            setVisibleUsername(true);
-            setValidUsername(false);
-            
-        };
-
-        if ( validUsername && validator.isEmail(username)){
-            setVisibleUsername(true);
+        if (validator.isEmail(username) && !validator.contains(username, ' ')){
             setValidUsername(true);
+            setVisibleUsername(true)
 
-            if (validPassword === validUsername && password !== ''){
-                setLocked(false);
-            };
-        };
-        
-        if ( !validPassword && !!password ){
-            if ( !validPassword == validUsername ){
-                setLocked(true);
-            };
+        } else if (!validator.isEmail(username) && username.length > 0){
+            setValidUsername(false)
+            setVisibleUsername(true)   
+        }
 
-        };
-
-        if ( validPassword && password){
+        if (validator.contains(password, ' ') || password.length < 8 && password !== ''){
+            setVisiblePassword(true)
+            setValidPassword(false)
+            
+        } else if (!validator.contains(password, ' ') && password.length >= 8 ) {
             setVisiblePassword(true)
             setValidPassword(true)
-            if (validPassword === validUsername && password !== ''){
-                setLocked(false);
-            };
-
-            if ( !validPassword == validUsername ){
-                setLocked(true);
-            };
-        };
+        }
 
     },[username, password]);
 
@@ -108,7 +79,7 @@ const LoginForm = ( props) => {
                                 className={`${style.inputBlock}`}>Email
                                     <input
                                         type={"text"}
-                                         className={`${style.inputBlock} ${ !validUsername && !validator.isEmail(username) && style.inputError}`}
+                                         className={`${style.inputBlock} ${ validUsername === false && !validator.isEmail(username) && username.length > 0 && style.inputError}`}
                                          onBlur={onBlurUsername}
                                          onChange={setUsernameForm}
                                          autocomplete="off"
@@ -119,7 +90,7 @@ const LoginForm = ( props) => {
                             <label className={`${style.inputBlock}`}>Password
                                     <input
                                          type={"password"}
-                                         className={`${style.inputBlock} ${!validPassword && style.inputError}`}
+                                         className={`${style.inputBlock} ${ validPassword === false && password > 0 && style.inputError}`}
                                          onBlur={onBlurPassword}
                                          onChange={setPasswordForm}
                                          value={password}
@@ -128,7 +99,7 @@ const LoginForm = ( props) => {
                                          
                             </label>
                         </div>
-                        <Button isLocked={isLocked}/>
+                        <Button isLocked={validPassword === true && validUsername === true ? false : true}/>
                     </form>
                 </section>)
 
