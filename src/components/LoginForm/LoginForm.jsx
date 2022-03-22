@@ -1,105 +1,174 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import style from"./LoginForm.module.css";
 import Button from "../../UI/Button/Button";
 import validator from 'validator';
 import ValidationBox from "./ValidationBox";
 
 
+
+const reducerUsername = ( state , action) => {
+
+    switch (action.dispatchType){
+        case 'INPUT_USERNAME':
+            return {...state, username: action.valor , validationVisible:true};
+
+        
+        case 'ON_BLUR_USERNAME':
+            if (!validator.isEmail(state.username) ){
+                return {...state, validUsername:false, validationVisible:true };
+            } else {
+                return {...state, validUsername:true, validationVisible:true };
+            };
+        
+        case 'USER_VALIDATION':
+            return {...state, validUsername:action.valor }
+
+        default: 
+            return {username:'', validUsername:false, validationVisible:false}
+    }
+};
+
+const reducerPassword = ( state , action) => {
+
+    switch ( action.dispatchType) {
+        
+        case  'INPUT_PASSWORD' :
+            return { ...state, password: action.valor , validationVisible: true};
+
+        case  'PASSWORD_VALIDATION' :
+            return { ...state, validPassword: action.valor};
+
+        case  'ON_BLUR_PASSWORD' :
+            if ( state.password.length < 5 && !validator.contains(state.password, ' ')){
+                return { ...state, validPassword: false , validationVisible: true}
+            }
+            else { 
+                return { ...state, validPassword: true , validationVisible: true  }
+            }
+        default :
+            return { password: '' , validPassword:false , validationVisible: false }
+    }
+}
+
 const LoginForm = ( props) => {
-    
-    const [username, setUsername] = useState('');
-    const [validUsername, setValidUsername ] = useState(false);
 
-    const [password, setPassword] = useState('');
-    const [validPassword, setValidPassword ] = useState(false);
+    const [ formUsernameConfiguration, dispatchUsername] = useReducer( reducerUsername , { 
+                                                                                            username:'' ,
+                                                                                            validUsername: false,
+                                                                                            validationVisible : false
+                                                                                        });
 
-    const [visibleUsername, setVisibleUsername] =   useState(false);
-    const [visiblePassword, setVisiblePassword] =   useState(false);
 
-    
-    const setUsernameForm = ( event ) => {
-        setUsername(event.target.value);
+    const [formPasswordConfiguration, dispatchPassword ] = useReducer (reducerPassword, {
+                                                                                            password: '' , 
+                                                                                            validPassword:false , 
+                                                                                            validationVisible: false 
+                                                                                        });
+
+    const setUsername = ( event ) => {
+        dispatchUsername({
+            dispatchType:'INPUT_USERNAME',
+            valor:event.target.value
+        });
     };
 
-    const setPasswordForm = ( event ) => {
-        setPassword(event.target.value);
+    const isValidUsername = ( value) => {
+        dispatchUsername ({
+            dispatchType: 'USER_VALIDATION',
+            valor: value
+        });
     };
 
-    const onSubmitForm = (event ) => {
-        event.preventDefault();
-        console.log('submited')
-    }
+    const onBlurUsername = () => {
+        dispatchUsername ({
+            dispatchType:'ON_BLUR_USERNAME'
+        });
+    };
 
-    const onBlurUsername = ( ) => {
-        if ( username.length === 0){
-            setTimeout ( () => {
-                setVisibleUsername(true)
-                setValidUsername(false);     
-            },500);
+
+    const setPassword = ( event ) => {
+        dispatchPassword ({
+            dispatchType: 'INPUT_PASSWORD',
+            valor: event.target.value
+        });
+    };
+
+    const isValidPassword = ( value ) => {
+        dispatchPassword ({
+            dispatchType: 'PASSWORD_VALIDATION',
+            valor:value
+        });
+    };
+
+    const onBlurPassword = () => {
+        dispatchPassword({
+            dispatchType:'ON_BLUR_PASSWORD'
+        });
+    };
+
+    //USERNAME
+    const [ username ] = [formUsernameConfiguration.username ];
+    const [ validUsername ] = [formUsernameConfiguration.validUsername ];
+    const [ validationUsernameVisible ] = [formUsernameConfiguration.validationVisible ];
+
+    //PASSWORD
+    const [ password ] = [ formPasswordConfiguration.password];
+    const [ validPassword ] =  [ formPasswordConfiguration.validPassword ]
+    const [ validationPasswordVisible ] = [formPasswordConfiguration.validationVisible ];
+
+    useEffect( () => {
+
+        if ( !validator.isEmail(username)){
+            isValidUsername(false);
+        } else {
+            isValidUsername(true);
         }
-    }
 
-    const onBlurPassword = ( ) => {
-        if ( password.length < 8){
-            setTimeout ( () => {
-            setVisiblePassword(true)
-            setValidPassword(false);
-            },500);
-        }
-    }
-
-    useEffect (() => {
-
-        if (validator.isEmail(username) && !validator.contains(username, ' ')){
-            setValidUsername(true);
-            setVisibleUsername(true)
-
-        } else if (!validator.isEmail(username) && username.length > 0){
-            setValidUsername(false)
-            setVisibleUsername(true)   
+        if ( password.length > 5 && !validator.contains(password, ' ') ){
+            isValidPassword(true);
+        } else {
+            isValidPassword(false);
         }
 
-        if (validator.contains(password, ' ') || password.length < 8 && password !== ''){
-            setVisiblePassword(true)
-            setValidPassword(false)
-            
-        } else if (!validator.contains(password, ' ') && password.length >= 8 ) {
-            setVisiblePassword(true)
-            setValidPassword(true)
-        }
-
-    },[username, password]);
+    }, [ username, password ]);
 
 
     return ( 
                 <section className={style.container}>
-                    <form className={style.box} onSubmit={onSubmitForm}>
+                    <form className={style.box} >
                         <div className={style.boxInput}>
                             <label 
                                 className={`${style.inputBlock}`}>Email
                                     <input
+                                        className={`${style.inputBlock} ${ validUsername === false && 
+                                                                            validationUsernameVisible === true &&
+                                                                            style.inputError}`}
                                         type={"text"}
-                                         className={`${style.inputBlock} ${ validUsername === false && !validator.isEmail(username) && username.length > 0 && style.inputError}`}
-                                         onBlur={onBlurUsername}
-                                         onChange={setUsernameForm}
-                                         autocomplete="off"
-                                         value={username}
+                                        onBlur={onBlurUsername}
+                                        value={username}
+                                        onChange={setUsername}
                                          />
-                                        <ValidationBox visible={visibleUsername} validUsername={validUsername} type={'username'}/>
+                                        <ValidationBox visible={validationUsernameVisible} 
+                                                       validUsername={validUsername} 
+                                                       type={'username'}/>
                             </label>
-                            <label className={`${style.inputBlock}`}>Password
+                            <label 
+                                className={`${style.inputBlock}`}>Password
                                     <input
-                                         type={"password"}
-                                         className={`${style.inputBlock} ${ validPassword === false && password > 0 && style.inputError}`}
-                                         onBlur={onBlurPassword}
-                                         onChange={setPasswordForm}
-                                         value={password}
-                                         />
-                                         <ValidationBox visible={visiblePassword} validPassword={validPassword} type={'password'}/>
-                                         
+                                        className={`${style.inputBlock} ${ validPassword === false && 
+                                                                           validationPasswordVisible === true &&
+                                                                           style.inputError}`}
+                                        type={"password"}
+                                        onBlur={onBlurPassword}
+                                        onChange={setPassword}
+                                        value={password}
+                                        />
+                                        <ValidationBox visible={validationPasswordVisible} 
+                                                       validPassword={validPassword} 
+                                                       type={'password'}/>
                             </label>
+                            <Button isLocked={ validPassword === true && validUsername === true ? false : true}/>
                         </div>
-                        <Button isLocked={validPassword === true && validUsername === true ? false : true}/>
                     </form>
                 </section>)
 

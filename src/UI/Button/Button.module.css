@@ -1,6 +1,9 @@
 .container{
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
 }
 
 .container button{
@@ -21,4 +24,8 @@
     background-color: rgb(243, 243, 122);
     transition-duration: 1s;
     cursor: pointer;
+}
+
+.container button:disabled{
+    background-color: rgb(235, 183, 86);
 }
