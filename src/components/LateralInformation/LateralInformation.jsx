@@ -15,7 +15,7 @@ const LateralInformation = ( ) => {
                     <div>
                         <ul>
                             <li>
-                            <Button buttonName={'Button 1'}/>
+                                <Button buttonName={'Button 1'}/>
                             </li>
                             <li>
                                 <Button buttonName={'Button 2'}/>

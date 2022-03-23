@@ -15,9 +15,6 @@
     font-size: 15px;
 }
 
-ul li:not(:last-child){
-    padding: 20px;
-}
 
 .ul button {
     background-color: white;
@@ -30,4 +27,5 @@ ul li:not(:last-child){
 
 .ul button:hover {
     cursor: pointer;
+    background-color: rgb(235, 183, 86);;
 }

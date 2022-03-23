@@ -6,7 +6,6 @@ import ValidationBox from "./ValidationBox";
 import { AuthContext } from "../../store/AuthContext";
 
 
-
 const reducerUsername = ( state , action) => {
 
     switch (action.dispatchType){
@@ -112,9 +111,11 @@ const LoginForm = ( props) => {
         });
     };
 
-    const onSubmitForm = ( event ) => {
+    const onSubmitForm = async( event ) => {
         event.preventDefault();
+
         context.login()
+        
     };
 
     //USERNAME

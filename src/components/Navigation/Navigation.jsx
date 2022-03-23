@@ -9,9 +9,9 @@ const Navigation = ( ) => {
 
     return (
         <ul className={style.ul}>
-            <li>Admin</li>
-            <li>My Account</li>
-            <li><Button buttonName={'Logout'} isLocked={false} action={context.logout}/></li>
+            <li><Button buttonName={'Admin'} isLocked={false} /></li>
+            <li><Button buttonName={'My profile'} isLocked={false}/></li>
+            <li><Button buttonName={'Logout'} isLocked={false} /></li>
         </ul>
     );
 };
