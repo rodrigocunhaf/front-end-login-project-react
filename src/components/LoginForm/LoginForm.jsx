@@ -1,8 +1,9 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import style from"./LoginForm.module.css";
 import Button from "../../UI/Button/Button";
 import validator from 'validator';
 import ValidationBox from "./ValidationBox";
+import { AuthContext } from "../../store/AuthContext";
 
 
 
@@ -27,6 +28,7 @@ const reducerUsername = ( state , action) => {
             return {username:'', validUsername:false, validationVisible:false}
     }
 };
+
 
 const reducerPassword = ( state , action) => {
 
@@ -64,6 +66,10 @@ const LoginForm = ( props) => {
                                                                                             validPassword:false , 
                                                                                             validationVisible: false 
                                                                                         });
+
+    
+    const context = useContext(AuthContext);
+
 
     const setUsername = ( event ) => {
         dispatchUsername({
@@ -106,6 +112,11 @@ const LoginForm = ( props) => {
         });
     };
 
+    const onSubmitForm = ( event ) => {
+        event.preventDefault();
+        context.login()
+    };
+
     //USERNAME
     const [ username ] = [formUsernameConfiguration.username ];
     const [ validUsername ] = [formUsernameConfiguration.validUsername ];
@@ -132,10 +143,12 @@ const LoginForm = ( props) => {
 
     }, [ username, password ]);
 
+    
+
 
     return ( 
                 <section className={style.container}>
-                    <form className={style.box} >
+                    <form className={style.box} onSubmit={onSubmitForm}>
                         <div className={style.boxInput}>
                             <label 
                                 className={`${style.inputBlock}`}>Email
@@ -167,7 +180,9 @@ const LoginForm = ( props) => {
                                                        validPassword={validPassword} 
                                                        type={'password'}/>
                             </label>
-                            <Button isLocked={ validPassword === true && validUsername === true ? false : true}/>
+                            <div className={style.containerButton}>
+                                 <Button isLocked={ validPassword === true && validUsername === true ? false : true} buttonName={'Login'}/>
+                            </div>
                         </div>
                     </form>
                 </section>)

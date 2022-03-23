@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../../store/AuthContext";
 import style from "./Button.module.css"
 
 const Button = (props ) => {
 
-    const jsx = <div className={style.container}>
-                    <button disabled={props.isLocked}>Login</button>
-                </div>
+    const context = useContext(AuthContext);
 
-    return jsx;
+        return <button type='submit' disabled={props.isLocked} onClick={props.action}>{ props.buttonName}</button>
+
 };
 
 export default Button;

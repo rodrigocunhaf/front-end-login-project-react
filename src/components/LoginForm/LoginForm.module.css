@@ -7,6 +7,33 @@
 
 }
 
+.containerButton{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+}
+
+.container button{
+    background-color: rgb(235, 183, 86);
+    border:1px solid black;
+    padding: 10px;
+    margin: 10px;
+    min-width: 200px;
+    max-width: 200px;
+    min-height: 50px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 4px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.containerButton:hover {
+    cursor: pointer;
+}
+
 .box{
     background-color: white;
     padding: 50px;

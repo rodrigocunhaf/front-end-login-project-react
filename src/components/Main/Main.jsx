@@ -1,19 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Header from '../Header/Header';
 import style from "./Main.module.css"
 import Footer from '../Footer/Footer';
 import LoginForm from '../LoginForm/LoginForm';
 import Box from '../../UI/Box/Box';
+import { AuthContext } from '../../store/AuthContext';
+import LateralInformation from '../LateralInformation/LateralInformation';
 
+const Main = () => {
 
-function Main() {
+  const context = useContext (AuthContext);
 
   return (
     <React.Fragment>
         <Header/>
-          <Box>
+           { context.isLogged === false && <Box>
               <LoginForm/>
-          </Box>
+            </Box>
+           }
+          {
+            context.isLogged === true && 
+            <LateralInformation/>
+          }
         <Footer/>
     </React.Fragment>
   );

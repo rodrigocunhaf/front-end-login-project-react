@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import style from "./Header.module.css";
 import logo from "../../assets/images/icons/user-logo.png"
+import Navigation from '../Navigation/Navigation';
+import { AuthContext } from '../../store/AuthContext';
 
 
-const Header = (  ) => {
+const Header = ( ) => {
+
+    const context = useContext(AuthContext);
 
     const jsx = <React.Fragment>
                     <div className={style.container}>
@@ -15,6 +19,7 @@ const Header = (  ) => {
                                     Login Project
                                 </h1>
                             </div>
+                            { context.isLogged === true && <Navigation/>}
                         </div>
                     </div>
                 </React.Fragment>
